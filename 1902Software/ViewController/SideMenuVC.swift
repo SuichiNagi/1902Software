@@ -27,8 +27,10 @@ class SideMenuVC: UIViewController {
     }
     
     @objc func signoutTap() {
+        showLoadingView()
         UserService().logoutUser { [weak self] result in
             guard let self = self else { return }
+            self.dismissLoadingView()
             switch result {
             case .success(let success):
                 print(success)
@@ -43,34 +45,39 @@ class SideMenuVC: UIViewController {
     
     func setUI() {
         self.navigationController?.isNavigationBarHidden = true
+        self.view.backgroundColor = .systemBackground.withAlphaComponent(0)
     
         let statusBarHeight = getStatusBarHeight()
         
-        view.backgroundColor = .systemBackground
+        view.addSubview(mainContainverView)
+        mainContainverView.snp.makeConstraints { make in
+            make.top.left.bottom.equalToSuperview()
+            make.right.equalToSuperview().offset(-50)
+        }
         
-        view.addSubview(navContainerView)
+        mainContainverView.addSubview(navContainerView)
         navContainerView.snp.makeConstraints { make in
-            make.top.left.right.equalToSuperview()
+            make.top.left.right.equalTo(mainContainverView)
             make.height.equalTo(44 + statusBarHeight)
         }
         
-        view.addSubview(backButton)
+        navContainerView.addSubview(backButton)
         backButton.snp.makeConstraints { make in
             make.bottom.equalTo(navContainerView.snp.bottom).offset(-5)
             make.left.equalTo(navContainerView).offset(10)
             make.height.width.equalTo(40)
         }
         
-        view.addSubview(containerView)
-        containerView.snp.makeConstraints { make in
+        mainContainverView.addSubview(signoutContainerView)
+        signoutContainerView.snp.makeConstraints { make in
             make.top.equalTo(navContainerView.snp.bottom)
             make.left.right.equalToSuperview()
             make.height.equalTo(60)
         }
         
-        containerView.addSubview(signoutLabel)
+        signoutContainerView.addSubview(signoutLabel)
         signoutLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(containerView)
+            make.centerY.equalTo(signoutContainerView)
             make.left.equalTo(backButton.snp.right).offset(5)
         }
     }
@@ -79,6 +86,13 @@ class SideMenuVC: UIViewController {
         delegate.closeMenu()
         print("Meow")
     }
+    
+    lazy var mainContainverView: UIView = {
+        let mainContainerView = UIView()
+        mainContainerView.backgroundColor = .systemBackground
+        mainContainerView.translatesAutoresizingMaskIntoConstraints = false
+        return mainContainerView
+    }()
     
     lazy var navContainerView: UIView = {
         let navContainerView = UIView()
@@ -95,12 +109,12 @@ class SideMenuVC: UIViewController {
         return backButton
     }()
     
-    lazy var containerView: UIView = {
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
+    lazy var signoutContainerView: UIView = {
+        let signoutContainerView = UIView()
+        signoutContainerView.translatesAutoresizingMaskIntoConstraints = false
         let tap = UITapGestureRecognizer(target: self, action: #selector(signoutTap))
-        containerView.addGestureRecognizer(tap)
-        return containerView
+        signoutContainerView.addGestureRecognizer(tap)
+        return signoutContainerView
     }()
     
     lazy var signoutLabel: SWTitleLabel = {

@@ -167,7 +167,7 @@ class PostListVC: UIViewController, PostListVCDelegate {
     
     lazy var sideMenuVC: SideMenuVC = {
         let sideMenuVC = SideMenuVC()
-        sideMenuVC.view.frame = CGRect(x: -view.frame.width, y: 0, width: view.frame.width - 50, height: view.frame.height)
+        sideMenuVC.view.frame = CGRect(x: -view.frame.width, y: 0, width: view.frame.width, height: view.frame.height)
         sideMenuVC.delegate = self
         return sideMenuVC
     }()
