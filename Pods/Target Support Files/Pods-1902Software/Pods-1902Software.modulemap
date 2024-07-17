@@ -1,0 +1,6 @@
+framework module Pods_1902Software {
+  umbrella header "Pods-1902Software-umbrella.h"
+
+  export *
+  module * { export * }
+}
