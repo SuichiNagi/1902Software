@@ -32,6 +32,9 @@ class SideMenuVC: UIViewController {
             switch result {
             case .success(let success):
                 print(success)
+                DispatchQueue.main.async {
+                    self.navigationController?.popViewController(animated: true)
+                }
             case .failure(let failure):
                 print(failure)
             }
