@@ -34,7 +34,7 @@ class UserService {
         let payload = RegisterModel(username: username, password: password, email: email, name: name)
         
         guard let jsonData = try? JSONEncoder().encode(payload) else {
-            completion(.failure(.invalidJSON))
+            completion(.failure(.invalidData))
             return
         }
         
@@ -52,7 +52,7 @@ class UserService {
         let payload = LoginModel(username: username, password: password)
         
         guard let jsonData = try? JSONEncoder().encode(payload) else {
-            completion(.failure(.invalidJSON))
+            completion(.failure(.invalidData))
             return
         }
         
@@ -92,7 +92,7 @@ class UserService {
         let payload = CreatedPostModel(title: title, body: body)
         
         guard let jsonData = try? JSONEncoder().encode(payload) else {
-            completion(.failure(.invalidJSON))
+            completion(.failure(.invalidData))
             return
         }
         

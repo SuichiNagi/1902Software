@@ -33,6 +33,11 @@ class SignUpVC: UIViewController {
             return
         }
         
+        guard passwordField.text!.count >= 6 else {
+            print("minimum of 6 password")
+            return
+        }
+        
         guard passwordField.text == repeatPasswordField.text else {
             print("invalid pass")
             return

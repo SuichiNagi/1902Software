@@ -21,7 +21,7 @@ class UserLoginVC: UIViewController {
     @objc func loginUser() {
         let isAllFieldsEmpty = checkAllFieldsEmpty()
         guard !isAllFieldsEmpty else {
-            print("empty")
+            presentSSAlertOnMainThread(title: "Invalid", message: "Please enter you username and password", buttonTitle: "Ok")
             return
         }
         
@@ -43,6 +43,8 @@ class UserLoginVC: UIViewController {
                     let listVC = PostListVC()
                     listVC.username = self.usernameTextField.text!
                     self.navigationController?.pushViewController(listVC, animated: true)
+                    
+                    self.resetField()
                 }
             case .failure(let error):
                 print("Error logging in user: \(error)")
@@ -67,6 +69,14 @@ class UserLoginVC: UIViewController {
 //        }
     }
     
+    func resetField() {
+        usernameTextField.text = ""
+        passwordTextField.text = ""
+        
+        usernameTextField.resignFirstResponder()
+        passwordTextField.resignFirstResponder()
+    }
+    
     
     func checkAllFieldsEmpty() -> Bool {
         // Check if all fields are empty
@@ -75,6 +85,16 @@ class UserLoginVC: UIViewController {
         
         // Return true if all fields are empty, false otherwise
         return username.isEmpty || password.isEmpty
+    }
+    
+    @objc func checkAndUncheck(_ sender: SWCheckbox) {
+        rememberMeCheckbox.buttonClicked(sender: sender)
+        print("meow")
+    }
+    
+    @objc func goSignUp() {
+        let signUpVC = SignUpVC()
+        navigationController?.pushViewController(signUpVC, animated: true)
     }
     
     func setUI () {
@@ -117,9 +137,21 @@ class UserLoginVC: UIViewController {
             make.trailing.equalToSuperview().offset(-padding)
         }
         
+        view.addSubview(rememberMeCheckbox)
+        rememberMeCheckbox.snp.makeConstraints { make in
+            make.top.equalTo(passwordTextField.snp.bottom).offset(10)
+            make.leading.equalToSuperview().offset(padding)
+        }
+        
+        view.addSubview(rememberMeLabel)
+        rememberMeLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(rememberMeCheckbox)
+            make.leading.equalTo(rememberMeCheckbox.snp.trailing).offset(5)
+        }
+        
         view.addSubview(buttonLogin)
         buttonLogin.snp.makeConstraints { make in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(30)
+            make.top.equalTo(rememberMeCheckbox.snp.bottom).offset(10)
             make.height.equalTo(50)
             make.leading.equalToSuperview().offset(padding)
             make.trailing.equalToSuperview().offset(-padding)
@@ -177,6 +209,22 @@ class UserLoginVC: UIViewController {
         return passwordTextFieldTextField
     }()
     
+    lazy var rememberMeCheckbox: SWCheckbox = {
+        let checkbox = SWCheckbox()
+        checkbox.isChecked = false
+        checkbox.tintColor = .systemGreen
+        checkbox.translatesAutoresizingMaskIntoConstraints = false
+        checkbox.addTarget(self, action: #selector(checkAndUncheck(_:)), for: .touchUpInside)
+        return checkbox
+    }()
+    
+    lazy var rememberMeLabel: SWTitleLabel = {
+        let rememberMeLabel = SWTitleLabel(textAlignment: .left, fontSize: 13)
+        rememberMeLabel.text = "Remember me"
+        rememberMeLabel.textColor = .systemGreen
+        return rememberMeLabel
+    }()
+    
     lazy var buttonLogin: SWButton = {
         let buttonLogin = SWButton(backgroundColor: .white, title: "LOG IN")
         buttonLogin.addTarget(self, action: #selector(loginUser), for: .touchUpInside)
@@ -206,12 +254,5 @@ class UserLoginVC: UIViewController {
         createAccountLabel.addGestureRecognizer(tap)
         return createAccountLabel
     }()
-    
-    @objc func goSignUp() {
-        print("Hey")
-        let signUpVC = SignUpVC()
-        
-        navigationController?.pushViewController(signUpVC, animated: true)
-    }
 }
 
