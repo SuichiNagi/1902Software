@@ -36,8 +36,8 @@ class SideMenuVC: UIViewController {
                 print(success)
                 AuthService.shared.logout()
                 DispatchQueue.main.async {
-                    let loginViewController = UserLoginVC()
-                    self.navigationController?.setViewControllers([loginViewController], animated: true)
+                    let userLoginVC = UserLoginVC()
+                    self.navigationController?.setViewControllers([userLoginVC], animated: true)
 //                    self.navigationController?.popViewController(animated: true)
                 }
             case .failure(let failure):
