@@ -11,7 +11,7 @@ import SnapKit
 class UserLoginVC: UIViewController, UITextFieldDelegate {
     let userService = UserService()
     let networkManager = NetworkManager.shared
-    var loginModel: LoginModel!
+//    var loginModel: LoginModel!
     let defaults = UserDefaults.standard
     
     override func viewDidLoad() {

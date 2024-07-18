@@ -9,6 +9,8 @@ import UIKit
 
 class SignUpVC: UIViewController {
     
+    let defaults = UserDefaults.standard
+    
     let fontSize: CGFloat = 13
     
     var itemLabels: [UIView] = []
@@ -19,6 +21,13 @@ class SignUpVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        //clear saved username
+        clearSavedUsername()
     }
     
     @objc func signUpUser() {
@@ -43,6 +52,8 @@ class SignUpVC: UIViewController {
             return
         }
         
+        savedUsername()
+        
         showLoadingView()
         
         userService.registerUser(username: usernameField.text!, password: passwordField.text!, email: emailField.text!, name: fullnameField.text!) { [weak self] result in
@@ -57,7 +68,9 @@ class SignUpVC: UIViewController {
                 print("Response: \(success)")
                 DispatchQueue.main.async {
                     self.resetField()
-                    self.backButtonTapped()
+                    let listVC = PostListVC()
+                    listVC.username = self.usernameField.text!
+                    self.navigationController?.setViewControllers([listVC], animated: true)
                 }
                 // Handle successful registration
             case .failure(let error):
@@ -81,6 +94,16 @@ class SignUpVC: UIViewController {
 //                // Handle error
 //            }
 //        }
+    }
+    
+    //saved username
+    func savedUsername() {
+        defaults.set(usernameField.text!, forKey: "savedUsername")
+    }
+    
+    //clear saved username
+    func clearSavedUsername() {
+        defaults.removeObject(forKey: "savedUsername")
     }
     
     func resetField() {

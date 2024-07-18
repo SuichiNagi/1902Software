@@ -13,6 +13,8 @@ protocol PostListVCDelegate: AnyObject {
 }
 
 class PostListVC: UIViewController, PostListVCDelegate {
+    
+    let defaults = UserDefaults.standard
 
     let userService = UserService()
     
@@ -24,6 +26,7 @@ class PostListVC: UIViewController, PostListVCDelegate {
 
         setUI()
         getPostLists()
+        retrieveSavedUsername()
     }
     
 //    override func viewWillAppear(_ animated: Bool) {
@@ -67,8 +70,46 @@ class PostListVC: UIViewController, PostListVCDelegate {
         }
     }
     
-    func backButton() {
+//    func backButton() {
+//        
+//    }
+    
+    //retrieve saved username
+    func retrieveSavedUsername() {
+        if let savedUsername = defaults.string(forKey: "savedUsername") {
+            username = savedUsername
+        }
+    }
+    
+    //clear saved username
+    func clearSavedUsername() {
+        defaults.removeObject(forKey: "savedUsername")
+    }
+    
+    @objc func openMenu() {
+        addChild(sideMenuVC)
+        view.addSubview(sideMenuVC.view)
         
+        sideMenuVC.didMove(toParent: self)
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.sideMenuVC.view.frame.origin.x = 0
+        }) { _ in
+            self.view.addSubview(self.overlay)
+            self.view.bringSubviewToFront(self.sideMenuVC.view)
+        }
+    }
+    
+    func closeMenu() {
+        clearSavedUsername()
+        
+        let menuXPosition = -view.frame.width
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.sideMenuVC.view.frame.origin.x = menuXPosition
+        }) { _ in
+            self.overlay.removeFromSuperview()
+        }
     }
     
     private func getStatusBarHeight() -> CGFloat {
@@ -140,30 +181,6 @@ class PostListVC: UIViewController, PostListVCDelegate {
         addButton.addTarget(self, action: #selector(addPost), for: .touchUpInside)
         return addButton
     }()
-    
-    @objc func openMenu() {
-        addChild(sideMenuVC)
-        view.addSubview(sideMenuVC.view)
-        
-        sideMenuVC.didMove(toParent: self)
-        
-        UIView.animate(withDuration: 0.3, animations: {
-            self.sideMenuVC.view.frame.origin.x = 0
-        }) { _ in
-            self.view.addSubview(self.overlay)
-            self.view.bringSubviewToFront(self.sideMenuVC.view)
-        }
-    }
-    
-    func closeMenu() {
-        let menuXPosition = -view.frame.width
-        
-        UIView.animate(withDuration: 0.3, animations: {
-            self.sideMenuVC.view.frame.origin.x = menuXPosition
-        }) { _ in
-            self.overlay.removeFromSuperview()
-        }
-    }
     
     lazy var sideMenuVC: SideMenuVC = {
         let sideMenuVC = SideMenuVC()
