@@ -8,20 +8,23 @@
 import UIKit
 import SnapKit
 
-class UserLoginVC: UIViewController {
+class UserLoginVC: UIViewController, UITextFieldDelegate {
     let userService = UserService()
     let networkManager = NetworkManager.shared
     var loginModel: LoginModel!
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
+        
+        retrieveSavedCredentials()
     }
     
     @objc func loginUser() {
         let isAllFieldsEmpty = checkAllFieldsEmpty()
         guard !isAllFieldsEmpty else {
-            presentSSAlertOnMainThread(title: "Invalid", message: "Please enter you username and password", buttonTitle: "Ok")
+            presentSWAlertOnMainThread(title: "Invalid", message: "Please enter you username and password", buttonTitle: "Ok")
             return
         }
         
@@ -38,11 +41,12 @@ class UserLoginVC: UIViewController {
                 print("Response: \(authResponse)")
                 
                 userService.setAuthResponse(authResponse)
+                AuthService.shared.saveLoginDetails(token: authResponse.token, rememberMe: rememberMeCheckbox.isChecked)
                 
                 DispatchQueue.main.async {
                     let listVC = PostListVC()
                     listVC.username = self.usernameTextField.text!
-                    self.navigationController?.pushViewController(listVC, animated: true)
+                    self.navigationController?.setViewControllers([listVC], animated: true)
                     
                     self.resetField()
                 }
@@ -87,9 +91,45 @@ class UserLoginVC: UIViewController {
         return username.isEmpty || password.isEmpty
     }
     
+    //save credentials when remember me is checked and remove credentials when remember is unchecked
     @objc func checkAndUncheck(_ sender: SWCheckbox) {
         rememberMeCheckbox.buttonClicked(sender: sender)
-        print("meow")
+        
+        if rememberMeCheckbox.isChecked {
+            saveCredentials()
+        } else {
+            clearCredentials()
+        }
+    }
+    
+    func retrieveSavedCredentials() {
+        if let savedUsername = defaults.string(forKey: "savedUsername"),
+           let savedPassword = defaults.string(forKey: "savedPassword") {
+            usernameTextField.text = savedUsername
+            passwordTextField.text = savedPassword
+            rememberMeCheckbox.isChecked = true
+        }
+    }
+    
+    //save credentials
+    func saveCredentials() {
+        defaults.set(usernameTextField.text, forKey: "savedUsername")
+        defaults.set(passwordTextField.text, forKey: "savedPassword")
+    }
+    
+    //remove credentials
+    func clearCredentials() {
+        defaults.removeObject(forKey: "savedUsername")
+        defaults.removeObject(forKey: "savePassword")
+    }
+    
+    //if remember me is checked it automatically save updated credentials when user update username or password
+    @objc func textFieldDidChange() {
+        if rememberMeCheckbox.isChecked {
+            saveCredentials()
+        } else {
+            clearCredentials()
+        }
     }
     
     @objc func goSignUp() {
@@ -194,6 +234,8 @@ class UserLoginVC: UIViewController {
     
     lazy var usernameTextField: SWTextField = {
         let usernameTextField = SWTextField(underLineColor: .secondaryLabel)
+        usernameTextField.delegate = self
+        usernameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         return usernameTextField
     }()
     
@@ -206,6 +248,8 @@ class UserLoginVC: UIViewController {
     lazy var passwordTextField: SWTextField = {
         let passwordTextFieldTextField = SWTextField(underLineColor: .secondaryLabel)
         passwordTextFieldTextField.isSecureTextEntry = true
+        passwordTextFieldTextField.delegate = self
+        passwordTextFieldTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         return passwordTextFieldTextField
     }()
     

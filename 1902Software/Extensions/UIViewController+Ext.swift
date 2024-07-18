@@ -10,7 +10,7 @@ import UIKit
 fileprivate var containerView: UIView!
 
 extension UIViewController {
-    func presentSSAlertOnMainThread(title: String, message: String, buttonTitle: String) {
+    func presentSWAlertOnMainThread(title: String, message: String, buttonTitle: String) {
         DispatchQueue.main.async {
             let alertVC = SWAlertVC(alertTitle: title, message: message, buttonTitle: buttonTitle)
             alertVC.modalPresentationStyle  = .overFullScreen

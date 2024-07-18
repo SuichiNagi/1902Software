@@ -12,6 +12,7 @@
 		5F9EF4BC2C3D2D990065C396 /* CreatedPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9EF4BB2C3D2D990065C396 /* CreatedPostModel.swift */; };
 		5F9EF4BE2C3D36170065C396 /* SWParagraphLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9EF4BD2C3D36170065C396 /* SWParagraphLabel.swift */; };
 		5FA0453E2C494782003419BD /* SWCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0453D2C494782003419BD /* SWCheckbox.swift */; };
+		5FA045402C49564A003419BD /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0453F2C49564A003419BD /* KeychainService.swift */; };
 		5FA71FF92C362C4200D8D044 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA71FF82C362C4200D8D044 /* AppDelegate.swift */; };
 		5FA71FFB2C362C4200D8D044 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA71FFA2C362C4200D8D044 /* SceneDelegate.swift */; };
 		5FA71FFD2C362C4200D8D044 /* UserLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA71FFC2C362C4200D8D044 /* UserLoginVC.swift */; };
@@ -47,6 +48,7 @@
 		5F9EF4BB2C3D2D990065C396 /* CreatedPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedPostModel.swift; sourceTree = "<group>"; };
 		5F9EF4BD2C3D36170065C396 /* SWParagraphLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWParagraphLabel.swift; sourceTree = "<group>"; };
 		5FA0453D2C494782003419BD /* SWCheckbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWCheckbox.swift; sourceTree = "<group>"; };
+		5FA0453F2C49564A003419BD /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		5FA71FF52C362C4200D8D044 /* 1902Software.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1902Software.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FA71FF82C362C4200D8D044 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5FA71FFA2C362C4200D8D044 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 		5FA720292C36A0E600D8D044 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				5FA0453F2C49564A003419BD /* KeychainService.swift */,
 				5FA720162C36566A00D8D044 /* NetworkManager.swift */,
 				5FA7202E2C36B12D00D8D044 /* ErrorMessage.swift */,
 			);
@@ -347,6 +350,7 @@
 				5FA720362C370AC800D8D044 /* RegisterModel.swift in Sources */,
 				5FA7202F2C36B12D00D8D044 /* ErrorMessage.swift in Sources */,
 				5FA71FFB2C362C4200D8D044 /* SceneDelegate.swift in Sources */,
+				5FA045402C49564A003419BD /* KeychainService.swift in Sources */,
 				5FA720212C3681F400D8D044 /* PostListViewCell.swift in Sources */,
 				5FA720132C363A4300D8D044 /* SWButton.swift in Sources */,
 			);
