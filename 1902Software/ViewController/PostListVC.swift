@@ -39,7 +39,6 @@ class PostListVC: UIViewController, PostListVCDelegate {
     }
     
     func getPostLists() {
-        
         DispatchQueue.main.async {
             self.showLoadingView()
         }
@@ -81,11 +80,6 @@ class PostListVC: UIViewController, PostListVCDelegate {
         }
     }
     
-    //clear saved username
-    func clearSavedUsername() {
-        defaults.removeObject(forKey: "savedUsername")
-    }
-    
     @objc func openMenu() {
         addChild(sideMenuVC)
         view.addSubview(sideMenuVC.view)
@@ -101,8 +95,6 @@ class PostListVC: UIViewController, PostListVCDelegate {
     }
     
     func closeMenu() {
-        clearSavedUsername()
-        
         let menuXPosition = -view.frame.width
         
         UIView.animate(withDuration: 0.3, animations: {

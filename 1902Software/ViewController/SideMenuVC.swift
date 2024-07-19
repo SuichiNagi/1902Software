@@ -9,6 +9,8 @@ import UIKit
 
 class SideMenuVC: UIViewController {
     
+//    let defaults = UserDefaults.standard
+    
     weak var delegate: PostListVCDelegate!
 
     override func viewDidLoad() {
@@ -35,7 +37,9 @@ class SideMenuVC: UIViewController {
             case .success(let success):
                 print(success)
                 AuthService.shared.logout()
+                
                 DispatchQueue.main.async {
+//                    self.clearSavedUsername()
                     let userLoginVC = UserLoginVC()
                     self.navigationController?.setViewControllers([userLoginVC], animated: true)
 //                    self.navigationController?.popViewController(animated: true)
@@ -45,6 +49,11 @@ class SideMenuVC: UIViewController {
             }
         }
     }
+    
+    //clear saved username
+//    func clearSavedUsername() {
+//        defaults.removeObject(forKey: "savedUsername")
+//    }
     
     func setUI() {
         self.navigationController?.isNavigationBarHidden = true

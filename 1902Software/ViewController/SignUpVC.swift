@@ -27,7 +27,7 @@ class SignUpVC: UIViewController {
         super.viewWillDisappear(animated)
         
         //clear saved username
-        clearSavedUsername()
+//        clearSavedUsername()
     }
     
     @objc func signUpUser() {
@@ -131,6 +131,8 @@ class SignUpVC: UIViewController {
     }
     
     func setUI() {
+        navigationController?.isNavigationBarHidden = false
+        
         let backButton = UIBarButtonItem(image: UIImage(named: "ic-back"), style: .plain, target: self, action: #selector(backButtonTapped))
         backButton.tintColor = .black
         navigationItem.leftBarButtonItem = backButton

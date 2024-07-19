@@ -91,7 +91,7 @@ class UserLoginVC: UIViewController, UITextFieldDelegate {
         return username.isEmpty || password.isEmpty
     }
     
-    //save credentials when remember me is checked and remove credentials when remember is unchecked
+    //save credentials when remember me is checked / remove credentials when remember is unchecked
     @objc func checkAndUncheck(_ sender: SWCheckbox) {
         rememberMeCheckbox.buttonClicked(sender: sender)
         
@@ -102,6 +102,7 @@ class UserLoginVC: UIViewController, UITextFieldDelegate {
         }
     }
     
+    //retrieve credentials
     func retrieveSavedCredentials() {
         if let savedUsername = defaults.string(forKey: "savedUsername"),
            let savedPassword = defaults.string(forKey: "savedPassword") {
@@ -256,8 +257,6 @@ class UserLoginVC: UIViewController, UITextFieldDelegate {
     lazy var rememberMeCheckbox: SWCheckbox = {
         let checkbox = SWCheckbox()
         checkbox.isChecked = false
-        checkbox.tintColor = .systemGreen
-        checkbox.translatesAutoresizingMaskIntoConstraints = false
         checkbox.addTarget(self, action: #selector(checkAndUncheck(_:)), for: .touchUpInside)
         return checkbox
     }()
