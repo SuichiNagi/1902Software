@@ -41,7 +41,7 @@ class UserLoginVC: UIViewController, UITextFieldDelegate {
                 print("Response: \(authResponse)")
                 
                 userService.setAuthResponse(authResponse)
-                AuthService.shared.saveLoginDetails(token: authResponse.token, rememberMe: rememberMeCheckbox.isChecked)
+                AuthService.shared.saveLoginDetails(token: authResponse.token, rememberMe: stayLoginCheckbox.isChecked)
                 
                 DispatchQueue.main.async {
                     let listVC = PostListVC()
@@ -93,7 +93,7 @@ class UserLoginVC: UIViewController, UITextFieldDelegate {
     }
     
     //save credentials when remember me is checked / remove credentials when remember is unchecked
-    @objc func checkAndUncheck(_ sender: SWCheckbox) {
+    @objc func rememberMecheckAndUncheck(_ sender: SWCheckbox) {
         rememberMeCheckbox.buttonClicked(sender: sender)
         
         if rememberMeCheckbox.isChecked {
@@ -101,6 +101,10 @@ class UserLoginVC: UIViewController, UITextFieldDelegate {
         } else {
             clearCredentials()
         }
+    }
+    
+    @objc func stayLogincheckAndUncheck(_ sender: SWCheckbox) {
+        stayLoginCheckbox.buttonClicked(sender: sender)
     }
     
     //retrieve credentials
@@ -191,9 +195,21 @@ class UserLoginVC: UIViewController, UITextFieldDelegate {
             make.leading.equalTo(rememberMeCheckbox.snp.trailing).offset(5)
         }
         
+        view.addSubview(stayLoginCheckbox)
+        stayLoginCheckbox.snp.makeConstraints { make in
+            make.top.equalTo(rememberMeCheckbox.snp.bottom).offset(10)
+            make.leading.equalToSuperview().offset(padding)
+        }
+        
+        view.addSubview(stayLoginLabel)
+        stayLoginLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(stayLoginCheckbox)
+            make.leading.equalTo(stayLoginCheckbox.snp.trailing).offset(5)
+        }
+        
         view.addSubview(buttonLogin)
         buttonLogin.snp.makeConstraints { make in
-            make.top.equalTo(rememberMeCheckbox.snp.bottom).offset(10)
+            make.top.equalTo(stayLoginCheckbox.snp.bottom).offset(10)
             make.height.equalTo(50)
             make.leading.equalToSuperview().offset(padding)
             make.trailing.equalToSuperview().offset(-padding)
@@ -258,7 +274,7 @@ class UserLoginVC: UIViewController, UITextFieldDelegate {
     lazy var rememberMeCheckbox: SWCheckbox = {
         let checkbox = SWCheckbox()
         checkbox.isChecked = false
-        checkbox.addTarget(self, action: #selector(checkAndUncheck(_:)), for: .touchUpInside)
+        checkbox.addTarget(self, action: #selector(rememberMecheckAndUncheck(_:)), for: .touchUpInside)
         return checkbox
     }()
     
@@ -267,6 +283,20 @@ class UserLoginVC: UIViewController, UITextFieldDelegate {
         rememberMeLabel.text = "Remember me"
         rememberMeLabel.textColor = .systemGreen
         return rememberMeLabel
+    }()
+    
+    lazy var stayLoginCheckbox: SWCheckbox = {
+        let checkbox = SWCheckbox()
+        checkbox.isChecked = false
+        checkbox.addTarget(self, action: #selector(stayLogincheckAndUncheck(_:)), for: .touchUpInside)
+        return checkbox
+    }()
+    
+    lazy var stayLoginLabel: SWTitleLabel = {
+        let stayLoginLabel = SWTitleLabel(textAlignment: .left, fontSize: 13)
+        stayLoginLabel.text = "Stay logged in"
+        stayLoginLabel.textColor = .systemGreen
+        return stayLoginLabel
     }()
     
     lazy var buttonLogin: SWButton = {
