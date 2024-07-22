@@ -39,21 +39,14 @@ class SideMenuVC: UIViewController {
                 AuthService.shared.logout()
                 
                 DispatchQueue.main.async {
-//                    self.clearSavedUsername()
                     let userLoginVC = UserLoginVC()
                     self.navigationController?.setViewControllers([userLoginVC], animated: true)
-//                    self.navigationController?.popViewController(animated: true)
                 }
             case .failure(let failure):
                 print(failure)
             }
         }
     }
-    
-    //clear saved username
-//    func clearSavedUsername() {
-//        defaults.removeObject(forKey: "savedUsername")
-//    }
     
     func setUI() {
         self.navigationController?.isNavigationBarHidden = true

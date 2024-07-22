@@ -29,11 +29,6 @@ class PostListVC: UIViewController, PostListVCDelegate {
         retrieveSavedUsername()
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        getPostLists()
-//    }
-    
     func refreshPostList() {
         getPostLists()
     }
@@ -68,10 +63,6 @@ class PostListVC: UIViewController, PostListVCDelegate {
             }
         }
     }
-    
-//    func backButton() {
-//        
-//    }
     
     //retrieve saved username
     func retrieveSavedUsername() {
@@ -115,13 +106,6 @@ class PostListVC: UIViewController, PostListVCDelegate {
     }
     
     func setUI() {
-//        let backButton = UIBarButtonItem(image: UIImage(named: "ic-list-options"), style: .plain, target: self, action: #selector(openMenu))
-//        backButton.tintColor = .black
-//        navigationItem.leftBarButtonItem = backButton
-//        
-//        let addButton = UIBarButtonItem(image: UIImage(named: "ic-add"), style: .plain, target: self, action: #selector(addPost))
-//        addButton.tintColor = .black
-//        navigationItem.rightBarButtonItem = addButton
         self.navigationController?.isNavigationBarHidden = true
         
         let navigationBarHeight = navigationController?.navigationBar.frame.height ?? 0

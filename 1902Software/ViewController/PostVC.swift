@@ -32,12 +32,6 @@ class PostVC: UIViewController {
                 self.avatarImage.image = UIImage(named: "info-overlay-profpic")
             }
         }
-        //        NetworkManager.shared.downloadImage(from: postModel.image) { [weak self] image in
-        //            guard let self = self else { return }
-        //            DispatchQueue.main.async {
-        //                self.avatarImage.image = image ?? UIImage(named: "info-overlay-profpic")
-        //            }
-        //        }
         
         if postModel.title == "" || postModel.title == nil {
             self.titleLabel.text = "No title"

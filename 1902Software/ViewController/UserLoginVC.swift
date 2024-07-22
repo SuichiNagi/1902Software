@@ -11,7 +11,6 @@ import SnapKit
 class UserLoginVC: UIViewController, UITextFieldDelegate {
     let userService = UserService()
     let networkManager = NetworkManager.shared
-//    var loginModel: LoginModel!
     let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
@@ -55,23 +54,6 @@ class UserLoginVC: UIViewController, UITextFieldDelegate {
                 presentSWAlertOnMainThread(title: "Invalid", message: error.rawValue, buttonTitle: "Ok")
             }
         }
-        
-//        networkManager.loginUser(username: usernameTextField.text!, password: passwordTextField.text!) { [weak self] result in
-//            guard let self = self else { return }
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let authResponse):
-//                    print("User logged in successfully")
-//                    print("Response: \(authResponse)")
-//                    self.networkManager.setAuthResponse(authResponse.token)
-//                    let listVC = PostListVC()
-//                    listVC.username = self.usernameTextField.text!
-//                    self.navigationController?.pushViewController(listVC, animated: true)
-//                case .failure(let error):
-//                    print("Error logging in user: \(error)")
-//                }
-//            }
-//        }
     }
     
     func resetField() {

@@ -25,9 +25,6 @@ class SignUpVC: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        //clear saved username
-//        clearSavedUsername()
     }
     
     @objc func signUpUser() {
@@ -83,22 +80,6 @@ class SignUpVC: UIViewController {
                 // Handle error
             }
         }
-        
-//        NetworkManager.shared.registerUser(username: usernameField.text!, password: passwordField.text!, email: emailField.text!, name: fullnameField.text!) { [weak self] result in
-//            guard let self = self else { return }
-//            
-//            switch result {
-//            case .success(let success):
-//                print("Response: \(success)")
-//                DispatchQueue.main.async {
-//                    self.resetField()
-//                }
-//                // Handle successful registration
-//            case .failure(let error):
-//                print("Error registering user: \(error)")
-//                // Handle error
-//            }
-//        }
     }
     
     //saved username
