@@ -34,21 +34,25 @@ class SignUpVC: UIViewController {
         let isAllFieldsEmpty = checkAllFieldsEmpty()
         guard !isAllFieldsEmpty else {
             print("empty")
+            presentSWAlertOnMainThread(title: "Invalid", message: "Please fill up all in the register form. Please try again.", buttonTitle: "Ok")
             return
         }
         
         guard emailField.text!.isValidEmail else {
             print("invalid email")
+            presentSWAlertOnMainThread(title: "Invalid Email", message: "Please use correct email or use another email. Please try again.", buttonTitle: "Ok")
             return
         }
         
         guard passwordField.text!.count >= 6 else {
             print("minimum of 6 password")
+            presentSWAlertOnMainThread(title: "Invalid Password", message: "Please create a password more than 5. Please try again.", buttonTitle: "Ok")
             return
         }
         
         guard passwordField.text == repeatPasswordField.text else {
             print("invalid pass")
+            presentSWAlertOnMainThread(title: "Invalid Confirm Password", message: "Password and confirm password does not match. Please try again.", buttonTitle: "Ok")
             return
         }
         
@@ -75,6 +79,7 @@ class SignUpVC: UIViewController {
                 // Handle successful registration
             case .failure(let error):
                 print("Error registering user: \(error)")
+                presentSWAlertOnMainThread(title: "Invalid", message: error.rawValue, buttonTitle: "Ok")
                 // Handle error
             }
         }

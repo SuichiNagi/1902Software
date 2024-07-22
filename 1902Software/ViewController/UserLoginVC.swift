@@ -52,6 +52,7 @@ class UserLoginVC: UIViewController, UITextFieldDelegate {
                 }
             case .failure(let error):
                 print("Error logging in user: \(error)")
+                presentSWAlertOnMainThread(title: "Invalid", message: error.rawValue, buttonTitle: "Ok")
             }
         }
         
