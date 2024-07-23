@@ -51,6 +51,36 @@ class PostVC: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    func showButton(showButton: SWButton) {
+        view.addSubview(showButton)
+        showButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(bodyLabel.snp.bottom).offset(20)
+            make.height.equalTo(30)
+            make.width.equalTo(70)
+        }
+    }
+    
+    @objc func editMethod() {
+        print("tap Edit")
+        editButton.isHidden = true
+        saveButton.isHidden = false
+        
+        showButton(showButton: saveButton)
+        editButton.removeFromSuperview()
+        
+        
+    }
+    
+    @objc func saveMethod() {
+        print("tap Save")
+        editButton.isHidden = false
+        saveButton.isHidden = true
+        
+        showButton(showButton: editButton)
+        saveButton.removeFromSuperview()
+    }
+    
     private func getStatusBarHeight() -> CGFloat {
         let statusBarHeight: CGFloat
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
@@ -106,15 +136,15 @@ class PostVC: UIViewController {
             make.trailing.equalToSuperview().offset(-36)
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
         }
+        
+        showButton(showButton: editButton)
     }
-    
     
     lazy var navContainerView: UIView = {
         let navContainerView = UIView()
         navContainerView.backgroundColor = .white
         return navContainerView
     }()
-    
     
     lazy var backButton: UIButton = {
         let backButton = UIButton(type: .custom)
@@ -143,5 +173,21 @@ class PostVC: UIViewController {
     lazy var bodyLabel: SWParagraphLabel = {
         let bodyLabel = SWParagraphLabel(textAlignment: .left, fontSize: 15)
         return bodyLabel
+    }()
+    
+    lazy var editButton: SWButton = {
+        let editbutton = SWButton(backgroundColor: .systemPink, title: "Edit")
+        editbutton.setTitleColor(.white, for: .normal)
+        editbutton.isHidden = false
+        editbutton.addTarget(self, action: #selector(editMethod), for: .touchUpInside)
+        return editbutton
+    }()
+    
+    lazy var saveButton: SWButton = {
+        let saveButton = SWButton(backgroundColor: .systemGreen, title: "Save")
+        saveButton.setTitleColor(.white, for: .normal)
+        saveButton.isHidden = true
+        saveButton.addTarget(self, action: #selector(saveMethod), for: .touchUpInside)
+        return saveButton
     }()
 }

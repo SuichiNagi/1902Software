@@ -15,6 +15,8 @@ class CreatePostVC: UIViewController {
     
     let fontSize: CGFloat = 15
     
+    let maxCharacterLimit = 550
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,6 +31,7 @@ class CreatePostVC: UIViewController {
         let isAllFieldsEmpty = checkAllFieldsEmpty()
         guard !isAllFieldsEmpty else {
             print("empty")
+            presentSWAlertOnMainThread(title: "Invalid", message: "Please fill up all in the textfield. Thank you.", buttonTitle: "Ok")
             return
         }
         
@@ -43,6 +46,7 @@ class CreatePostVC: UIViewController {
                 print("Post created successfully: \(success)")
             case .failure(let error):
                 print("Failed to create post: \(error.localizedDescription)")
+                presentSWAlertOnMainThread(title: "Invalid", message: error.rawValue, buttonTitle: "Ok")
             }
         }
     }
@@ -89,7 +93,20 @@ class CreatePostVC: UIViewController {
             make.top.equalTo(designationLabel.snp.bottom).offset(spacingTop)
             make.leading.equalToSuperview().offset(padding)
             make.trailing.equalToSuperview().offset(-padding)
-            make.height.equalTo(40)
+            make.height.equalTo(260)
+        }
+        
+        view.addSubview(underlineTextField)
+        underlineTextField.snp.makeConstraints { make in
+            make.top.equalTo(designationTextfield.snp.bottom)
+            make.leading.trailing.equalTo(designationTextfield)
+            make.height.equalTo(1)
+        }
+        
+        view.addSubview(wordsAllowedLabel)
+        wordsAllowedLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(underlineTextField.snp.top).offset(-5)
+            make.right.equalTo(underlineTextField)
         }
         
         view.addSubview(infoLabel)
@@ -138,9 +155,19 @@ class CreatePostVC: UIViewController {
         return designationLabel
     }()
     
-    lazy var designationTextfield: SWTextField = {
-       let designationTextfield = SWTextField(underLineColor: .lightGray.withAlphaComponent(0.3))
+    lazy var designationTextfield: UITextView = {
+        let designationTextfield = UITextView()
+        designationTextfield.font = UIFont.systemFont(ofSize: fontSize)
+        designationTextfield.isScrollEnabled = false
+        designationTextfield.translatesAutoresizingMaskIntoConstraints = false
+        designationTextfield.delegate = self
         return designationTextfield
+    }()
+    
+    lazy var underlineTextField: UIView = {
+        let underlineTextfield = UIView()
+        underlineTextfield.backgroundColor = .lightGray.withAlphaComponent(0.3)
+        return underlineTextfield
     }()
     
     lazy var infoLabel: SWTitleLabel = {
@@ -148,10 +175,29 @@ class CreatePostVC: UIViewController {
         infoLabel.text = "Information about employee *"
         return infoLabel
     }()
+    
+    lazy var wordsAllowedLabel: SWTitleLabel = {
+        let wordsAllowedLabel = SWTitleLabel()
+        wordsAllowedLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        wordsAllowedLabel.text = "550 words max limit"
+        return wordsAllowedLabel
+    }()
 
     lazy var requiredFields: SWTitleLabel = {
         let requiredFields = SWTitleLabel(textAlignment: .center, fontSize: fontSize)
         requiredFields.text = "Require fields *"
         return requiredFields
     }()
+}
+
+extension CreatePostVC: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let currentText = textView.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
+        
+        // Check if the updated text exceeds the maximum limit
+        return updatedText.count <= maxCharacterLimit
+    }
+       
 }

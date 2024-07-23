@@ -42,8 +42,9 @@ class SideMenuVC: UIViewController {
                     let userLoginVC = UserLoginVC()
                     self.navigationController?.setViewControllers([userLoginVC], animated: true)
                 }
-            case .failure(let failure):
-                print(failure)
+            case .failure(let error):
+                print(error)
+                presentSWAlertOnMainThread(title: "Invalid", message: error.rawValue, buttonTitle: "Ok")
             }
         }
     }
